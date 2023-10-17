@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+
+  web:
+    image: hammer/sagemaker:latest
+    volumes:
+      - ${PWD}/.jupyter:/home/sagemaker-user/.jupyter
+      - ~/.aws:/home/sagemaker-user/.aws
+      - ~/.gitconfig:/home/sagemaker-user/.gitconfig
+      - ~/.git-credentials:/home/sagemaker-user/.git-credentials
+      - /home/hammer/box:/home/sagemaker-user/SageMaker
+    environment:
+      - PYTHONPATH=/home/sagemaker-user/SageMaker/mllib
+    ports:
+      - 8081:8888
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    command: jupyter lab --port 8888 --ip=0.0.0.0 --allow-root
+    networks:
+      - mynet 
+
+networks:
+  mynet:
+
