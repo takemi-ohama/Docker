@@ -11,8 +11,7 @@ RUN apt-get update -y && \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8 && \
-    update-locale LANG=en_US.UTF-8 && \
-    fc-cache -fv
+    update-locale LANG=en_US.UTF-8
 
 ARG PYTHON_VERSION=3.9.16
 ARG O_USER="sagemaker-user"

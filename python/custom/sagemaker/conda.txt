@@ -104,3 +104,5 @@ yaml
 openai
 google-auth
 pydata-google-auth
+openpyxl
+redshift_connector
