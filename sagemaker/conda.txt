@@ -5,7 +5,6 @@ blas
 boto3
 bzip2
 ca-certificates
-catboost
 cudatoolkit
 curl
 cython
@@ -93,3 +92,4 @@ pandas>=2
 pyarrow>=12
 pytorch>=2
 transformers>=4.34
+catboost == 1.2.2
