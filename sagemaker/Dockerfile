@@ -30,7 +30,7 @@ ENV SHELL=/bin/bash \
     PATH=${CONDA_DIR}/bin:${PATH}
 
 
-RUN useradd -m -s /bin/bash $O_USER && \
+RUN groupadd -g ${O_GID} $O_USER && useradd --uid ${O_UID} --gid ${O_GID} -m -s /bin/bash $O_USER && \
     usermod -aG users $O_USER && \
     usermod -aG users root && \
     echo '%users ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers && \
@@ -41,6 +41,12 @@ RUN useradd -m -s /bin/bash $O_USER && \
 
 # vscode serverのインストール
 RUN wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+
+# aws cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install && \
+    rm -rf aws awscliv2.zip
 
 USER $O_USER
 WORKDIR /home/$O_USER
@@ -62,8 +68,9 @@ COPY --chown=${O_USER}:users conda.txt conda.txt
 
 RUN pip install -U pip
 RUN mamba install -y --file conda.txt && mamba clean --all -f -y
-RUN pip uninstall -y torch
+#RUN pip uninstall -y torch
 RUN pip install  --no-cache-dir -r requirements.txt
+
 
 ENV PYTHONPATH=${PYTHONPATH}
 CMD tail -f /dev/null
