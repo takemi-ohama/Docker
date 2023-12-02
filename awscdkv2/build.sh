@@ -1,7 +1,7 @@
 name=`basename ${PWD}`
 tag=`date +%Y%m%d`01
 
-registry=ietty
+registry=hammer
 private_ecr=888777505088.dkr.ecr.ap-northeast-1.amazonaws.com
 
 docker build --no-cache -t ${registry}/${name}:${tag} .

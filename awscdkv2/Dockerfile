@@ -1,13 +1,13 @@
-FROM ietty/python310:latest
+FROM hammer/python311:latest
 
 USER root
 
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-    nodejs npm unzip \
+    nodejs npm unzip jq peco \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g n && n 18.12.0 
+RUN npm install -g n && n 20.9.0
 RUN npm install -g npm && npm -g update
 RUN npm install -g \
     aws-cdk aws-cdk-lib typescript \
@@ -24,10 +24,15 @@ RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubunt
     dpkg -i session-manager-plugin.deb && \
     rm -f session-manager-plugin.deb
 
+# sssh script
+# https://github.com/pj8/sssh
+RUN curl "https://raw.githubusercontent.com/pj8/sssh/main/sssh" -o "/usr/local/bin/sssh" && \
+    chmod 755 /usr/local/bin/sssh
+
 USER docker
 WORKDIR /home/docker
 
-RUN mamba install -y python-dotenv autopep8 pytest 
+RUN mamba install -y python-dotenv autopep8 pytest pydantic
 RUN pip install aws-cdk-lib constructs cdk-remote-stack pyyaml
 
 RUN git config --global credential.helper store
