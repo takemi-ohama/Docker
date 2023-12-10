@@ -8,16 +8,22 @@ ARG CONDA_DIR="/opt/conda"
 ARG PYTHON_VERSION=3.11.6
 
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+    git vim wget mysql-client ssh libreadline-dev curl \
+    ca-certificates sudo unzip locales language-pack-ja-base language-pack-ja \
+    nodejs npm unzip jq peco
+
+#google cloud cli
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] \
     http://packages.cloud.google.com/apt cloud-sdk main" | \
     tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
     sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
-    apt-get update -y && apt-get install -y --no-install-recommends \
-    git vim wget mysql-client ssh libreadline-dev curl \
-    ca-certificates sudo unzip locales language-pack-ja-base language-pack-ja \
-    nodejs npm unzip jq peco google-cloud-sdk \
+    apt-get update -y && apt-get install google-cloud-sdk -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
 
 RUN locale-gen en_US.UTF-8 && \
     update-locale LANG=en_US.UTF-8
