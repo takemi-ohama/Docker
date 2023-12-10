@@ -12,7 +12,7 @@ RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
     git vim wget mysql-client ssh libreadline-dev curl \
     ca-certificates sudo unzip locales language-pack-ja-base language-pack-ja \
-    nodejs npm unzip jq peco gpg
+    nodejs npm unzip jq peco apt-transport-https gnupg
 
 #google cloud cli
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | \
