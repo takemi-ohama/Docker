@@ -2,7 +2,6 @@ name=`basename ${PWD}`
 tag=`date +%Y%m%d`
 
 registry=hammer
-
 region=us-west-2
 profile=nyle
 private_ecr=644301431885.dkr.ecr.${region}.amazonaws.com

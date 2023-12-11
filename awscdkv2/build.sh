@@ -1,31 +1,25 @@
 name=`basename ${PWD}`
 tag=`date +%Y%m%d`01
 
-registry=hammer
-private_ecr=888777505088.dkr.ecr.ap-northeast-1.amazonaws.com
+region=ap-northeast-1
+quote_name=\"${name}\"
 
 set -xe
 
-docker build -t ${registry}/${name}:${tag} .
-docker tag ${registry}/${name}:${tag} ${registry}/${name}:latest
+registry=hammer
+docker buildx create --name armBuilder --use
+docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:${tag} .
+docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:latest .
 
-function pushDockerHub(){
-    docker login
-    docker push ${registry}/${name}:${tag}
-    docker push ${registry}/${name}:latest
-    echo "pushed: ${registry}/${name}:${tag}"
-}
 function pushPrivateECR(){
-    aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 763104351884.dkr.ecr.us-west-2.amazonaws.com
-    aws ecr create-repository --repository-name ${name}
-    docker tag ${registry}/${name}:${tag} ${private_ecr}/${name}:${tag}
-    docker push ${private_ecr}/${name}:${tag}
-    docker push ${private_ecr}/${name}:latest
-    echo "pushed: ${private_ecr}/${name}:${tag}"
+  aws ecr get-login-password --profile ${profile} --region ${region} | docker login --username AWS --password-stdin ${private_ecr}
+  [ -z "`aws --profile ${profile} --region ${region} ecr describe-repositories | grep ${quote_name}`" ] && \
+          aws ecr create-repository --profile ${profile} --region ${region} --repository-name ${name}
+    docker buildx build --platform linux/amd64,linux/arm64 --push -t ${private_ecr}/${name}:${tag} .
+    docker buildx build --platform linux/amd64,linux/arm64 --push -t ${private_ecr}/${name}:latest .
 }
 
-
-pushDockerHub
-#pushPublicECR
-#pushPrivateECR
+profile=carmo-dev
+private_ecr=422746423551.dkr.ecr.${region}.amazonaws.com
+pushPrivateECR
 
