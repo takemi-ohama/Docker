@@ -1,12 +1,9 @@
-aiohttp
-async-timeout
 autopep8
 blas
 boto3
 bzip2
 ca-certificates
 cudatoolkit
-curl
 cython
 datasets
 docutils
@@ -31,7 +28,6 @@ jupyterlab_pygments
 jupyterlab_server
 keyring
 keyutils
-langcodes
 matplotlib-base
 matplotlib-inline
 mypy_extensions
@@ -53,7 +49,6 @@ pillow
 prompt-toolkit
 psutil
 psycopg2
-pycurl
 pydantic
 pydocstyle
 pylint
@@ -65,7 +60,6 @@ pytz
 readline
 regex
 requests
-scikit-image
 scikit-learn
 scipy
 seaborn
@@ -79,7 +73,6 @@ typing
 tzdata
 yaml
 openai
-google-auth
 pydata-google-auth
 redshift_connector
 sqlalchemy-redshift
@@ -91,5 +84,7 @@ pytorch
 transformers
 google-cloud-bigquery[all]
 pydata-google-auth>=1.8
-google-auth>=2.23
+google-auth>=2.25
 catboost == 1.2.2
+accelerate
+faiss-gpu=1.7.4 

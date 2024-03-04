@@ -7,7 +7,8 @@ quote_name=\"${name}\"
 set -xe
 
 registry=hammer
-docker buildx create --name armBuilder --use
+#docker buildx create --driver docker-container --node armBuilder --name armBuilder
+#docker buildx use armBuilder
 docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:${tag} .
 docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:latest .
 

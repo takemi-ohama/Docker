@@ -6,6 +6,7 @@ ARG USERNAME="docker"
 ARG UID="1000"
 ARG CONDA_DIR="/home/${USERNAME}/conda"
 ARG PYTHON_VERSION=3.11.6
+ARG NODE_VERSION=20.9.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
@@ -38,7 +39,7 @@ ENV SHELL=/bin/bash \
 RUN useradd --uid ${UID} -m -s /bin/bash -G sudo,www-data,users ${USERNAME} && \
     echo '%sudo ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
-RUN npm install -g n && n 20.9.0
+RUN npm install -g n && n ${NODE_VERSION}
 RUN npm install -g npm && npm -g update
 RUN npm install -g \
     aws-cdk aws-cdk-lib typescript \
@@ -78,11 +79,11 @@ RUN set -x && \
     mamba list python | grep '^python ' | tr -s ' ' | cut -d ' ' -f 1,2 >> "${CONDA_DIR}/conda-meta/pinned" && \
     mamba install --quiet --yes mamba conda && \
     mamba update --all --quiet --yes && \
-    conda clean --all -y  #manba clean
+    mamba clean --all -yq
 
-RUN mamba install -y python-dotenv autopep8 pytest pydantic pandas boto3 pyyaml
-RUN pip install aws-cdk-lib constructs cdk-remote-stack
-RUN conda clean --all -y && pip cache purge
+RUN mamba install -y python-dotenv autopep8 pytest pydantic pandas boto3 pyyaml && \
+    pip install aws-cdk-lib constructs cdk-remote-stack && \
+    mamba clean --all -yq && conda clean --all -y && pip cache purge
 
 RUN git config --global credential.helper store
 
