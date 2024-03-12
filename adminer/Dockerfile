@@ -1,6 +1,4 @@
-From clue/adminer 
+FROM public.ecr.aws/docker/library/adminer:latest
 
-MAINTAINER "takemi.ohama" <takemi.ohama@gmail.com>
-
-RUN mv /var/www/index.php /var/www/adminer.php
-COPY ./index.php /var/www/index.php
+COPY login-servers-custom.php /var/www/html/plugins/login-servers-custom.php
+COPY 000-login-servers-custom.php /var/www/html/plugins-enabled/000-login-servers-custom.php
