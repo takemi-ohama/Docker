@@ -1,5 +1,5 @@
 FROM golang:1.8
-MAINTAINER takemi.ohama@gmail.com
+LABEL MAINTAINER takemi.ohama@gmail.com
 
 ENV REFRESHED_AT 2017-08-21
 ENV OAUTH2_PROXY_VERSION 2.2
