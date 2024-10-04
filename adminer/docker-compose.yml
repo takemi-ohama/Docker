@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+
+  app:
+    image: hammer/adminer:latest
+    ports:
+      - 8080:8080
+    env_file:
+      - env
+    volumes:
+      - ./login-servers-custom.php:/var/www/html/plugins/login-servers-custom.php
+      - ./000-login-servers-custom.php:/var/www/html/plugins-enabled/000-login-servers-custom.php
+
+
+
