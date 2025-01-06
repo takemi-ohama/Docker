@@ -84,4 +84,9 @@ RUN git config --global credential.helper store
 
 ENV PYTHONPATH=/home/${O_USER}/SageMaker/mllib
 ENV DOCKER_ARCH="$(uname)-$(uname -m)"
-CMD tail -f /dev/null
+
+CMD jupyter lab --ip 0.0.0.0 --port 8888 \
+    --ServerApp.base_url="/jupyterlab/default" \
+    --ServerApp.token='' \
+    --ServerApp.allow_origin='*'
+

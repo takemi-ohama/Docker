@@ -7,10 +7,11 @@ quote_name=\"${name}\"
 set -xe
 
 registry=hammer
+docker build  -t ${registry}/${name}:${tag} .
 #docker buildx create --driver docker-container --node armBuilder --name armBuilder
 #docker buildx use armBuilder
-docker buildx build --no-cache --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:${tag} .
-docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:latest .
+#docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:${tag} .
+#docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:latest .
 
 function pushPrivateECR(){
   aws ecr get-login-password --profile ${profile} --region ${region} | docker login --username AWS --password-stdin ${private_ecr}
@@ -20,8 +21,7 @@ function pushPrivateECR(){
     docker buildx build --platform linux/amd64,linux/arm64 --push -t ${private_ecr}/${name}:latest .
 }
 
-profile=carmo-dev
-private_ecr=422746423551.dkr.ecr.${region}.amazonaws.com
-pushPrivateECR
-docker pull ${registry}/${name}:latest
+#profile=carmo-dev
+#private_ecr=422746423551.dkr.ecr.${region}.amazonaws.com
+#pushPrivateECR
 
