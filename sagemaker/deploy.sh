@@ -1,2 +1,2 @@
-docker compose stop -t0
+docker compose down -t0
 docker compose up -d

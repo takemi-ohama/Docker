@@ -9,7 +9,7 @@ set -xe
 registry=hammer
 #docker buildx create --driver docker-container --node armBuilder --name armBuilder
 #docker buildx use armBuilder
-docker buildx build --no-cache --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:${tag} .
+docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:${tag} .
 docker buildx build --platform linux/amd64,linux/arm64/v8 --push -t ${registry}/${name}:latest .
 
 function pushPrivateECR(){
@@ -20,7 +20,7 @@ function pushPrivateECR(){
     docker buildx build --platform linux/amd64,linux/arm64 --push -t ${private_ecr}/${name}:latest .
 }
 
-profile=carmo-dev
+profile=default
 private_ecr=422746423551.dkr.ecr.${region}.amazonaws.com
 pushPrivateECR
 docker pull ${registry}/${name}:latest

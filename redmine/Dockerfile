@@ -27,3 +27,4 @@ COPY redmine-tw.png /usr/src/redmine/public/themes/TW-Style/stylesheets/icons/re
 
 USER root
 WORKDIR /usr/src/redmine
+

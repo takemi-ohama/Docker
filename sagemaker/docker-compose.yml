@@ -1,10 +1,9 @@
 version: '3.3'
 services:
 
-  web:
-    image: hammer/sagemaker:latest
+  jupyter:
+    image: hammer/sagemaker-jupyter:latest
     volumes:
-      - ${PWD}/.jupyter:/home/sagemaker-user/.jupyter
       - ~/.aws:/home/sagemaker-user/.aws
       - ~/.gitconfig:/home/sagemaker-user/.gitconfig
       - ~/.git-credentials:/home/sagemaker-user/.git-credentials
@@ -12,6 +11,24 @@ services:
       - PYTHONPATH=/home/sagemaker-user/SageMaker/mllib
     ports:
       - 8081:8888
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+    networks:
+      - mynet
+
+  codeeditor:
+    image: hammer/sagemaker-codeeditor:latest
+    volumes:
+      - ~/.aws:/home/sagemaker-user/.aws
+      - ~/.gitconfig:/home/sagemaker-user/.gitconfig
+      - ~/.git-credentials:/home/sagemaker-user/.git-credentials
+    environment:
+      - PYTHONPATH=/home/sagemaker-user/SageMaker/mllib
+    ports:
+      - 8082:8888
     deploy:
       resources:
         reservations:
